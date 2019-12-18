@@ -34,21 +34,27 @@ def dataGen(img_path, out_path, replication = 20, offsets = 3, lower_range = 2, 
     
     
     x = 0
+    #Iterates through images in the file
     for image in os.listdir(img_path):
+        #Determine the number of times the image is replicated
         for replicate in range(replication):
+            #reads in the image and turn it grayscale
             img = cv2.imread(f'{img_path}/{image}')
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             glist = gray.tolist()
+            #Randomly decide how many times and where the form will be offset
             for place in range(randint(1, offsets)):
                 ind = randint(0,int(len(glist) - 1))
+                #Randomly decide how large the offset will be
                 for counter in range(randint(lower_range, upper_range)):
-                    print(white)
+                    #Determine if the pixel will be stretched across the range or a white box will be inserted
                     if white == 'yes':
                         glist.insert(ind, glist[0])
                     else:
                         glist.insert(ind, glist[ind+1])                                    
             stretch = np.asarray(glist)
             x += 1
+            #Output the image
             cv2.imwrite(f'{out_path}/{x}.jpg', stretch)
 
 
